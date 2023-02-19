@@ -47,6 +47,13 @@ app.get('/products', async (req, res) => {
     }
 })
 
+app.delete('/products/:id', async (req, res) => {
+    const result = await Product.deleteOne({ _id: req.params.id });
+    res.send(result)
+
+
+})
+
 
 app.listen(5000, 'localhost', () => {
     console.log('Server is ON and running on http://localhost:5000')
