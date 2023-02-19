@@ -10,6 +10,8 @@ const app = express()
 app.use(express.json())
 app.use(cors());
 
+//crud operations
+
 app.post("/register", async (req, res) => {
     const user = new User(req.body);    //User is a model for User table for rbdatabse
     let result = await user.save();
@@ -28,15 +30,18 @@ app.post('/login', async (req, res) => {
         }
     } else {
         res.send({ result: "No User found " })
-
     }
 });
+
+// create product
 
 app.post('/add-product', async (req, res) => {
     const product = new Product(req.body);
     const result = await product.save();
     res.send(result);
 });
+
+// display all products
 
 app.get('/products', async (req, res) => {
     const products = await Product.find();
@@ -45,16 +50,37 @@ app.get('/products', async (req, res) => {
     } else {
         res.send({ result: "Product not found..." })
     }
-})
+});
+
+//delete product
 
 app.delete('/products/:id', async (req, res) => {
     const result = await Product.deleteOne({ _id: req.params.id });
     res.send(result)
+});
 
+// get one product
 
+app.get("/products/:id", async (req, res) => {
+    const result = await Product.findOne({ _id: req.params.id });
+    if (result) {
+        res.send(result)
+    } else {
+        res.send({ "result": "Record not found." })
+    }
+})
+// update product
+
+app.put("/products/:id", async (req, res) => {
+    const result = await Product.updateOne(
+        { _id: req.params.id }, //get products id
+        { $set: req.body }  /**  $set  operator replaces the value of a field with the specified value. standard way to update data */
+    );
+    res.send(result)
 })
 
 
 app.listen(5000, 'localhost', () => {
     console.log('Server is ON and running on http://localhost:5000')
 })
+
