@@ -79,8 +79,34 @@ app.put("/products/:id", async (req, res) => {
     res.send(result)
 })
 
+// search for products api
+
+app.get("/search/:key", async (req, res) => {
+    const result = await Product.find({
+        "$or": [
+            {
+                name: { $regex: req.params.key }  // we are fetching querry parameter
+            },
+            {
+                company: { $regex: req.params.key }
+            },
+            {
+                price: { $regex: req.params.key }
+            },
+            {
+                category: { $regex: req.params.key }
+            }
+        ]
+    });
+    res.send(result)
+})
+
 
 app.listen(5000, 'localhost', () => {
     console.log('Server is ON and running on http://localhost:5000')
 })
 
+
+/**$or - performs a logical OR operation on an array of one or more <expressions> and selects the documents that satisfy at least one of them
+ * $regex  - provides regular expression capabilities for pattern matching strings in queries. 
+ */
