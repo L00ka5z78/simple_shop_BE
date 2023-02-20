@@ -3,7 +3,9 @@ const cors = require('cors');
 require("./db/config")
 const User = require('./db/User');
 const Product = require('./db/Products');
+const Jwt = require("jsonwebtoken");
 
+const jwtKey = 'e-commerce';
 
 const app = express()
 
@@ -17,14 +19,33 @@ app.post("/register", async (req, res) => {
     let result = await user.save();
     result = result.toObject();
     delete result.password
-    res.send(result)
+
+    Jwt.sign({ result }, jwtKey, {
+        expiresIn: "2h"
+    }, (err, token) => {
+        if (err) {
+            res.send({ result: "something went wrong, please try again later..." });
+        }
+        res.send({ result, auth: token })
+    })
+
+    // res.send(result) 34
 })
+
 app.post('/login', async (req, res) => {
     if (req.body.password && req.body.email) {  //if password and email is present proceed findOne else NO USER found
 
         const user = await User.findOne(req.body).select("-password"); //find 1user in req.body without password 
-        if (user) {  //if user is present display user otherwise send message AS AN OBJECT
-            res.send(user);
+        if (user) {                 //if user is present display user otherwise send message AS AN OBJECT
+
+            Jwt.sign({ user }, jwtKey, {
+                expiresIn: "2h"
+            }, (err, token) => {
+                if (err) {
+                    res.send({ result: "something went wrong, please try again later..." });
+                }
+                res.send({ user, auth: token })
+            })
         } else {
             res.send({ result: "No User found " })
         }
