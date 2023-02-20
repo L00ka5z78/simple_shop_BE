@@ -56,7 +56,7 @@ app.post('/login', async (req, res) => {
 
 // create product
 
-app.post('/add-product', async (req, res) => {
+app.post('/add-product', verifyToken, async (req, res) => {
     const product = new Product(req.body);
     const result = await product.save();
     res.send(result);
@@ -64,7 +64,7 @@ app.post('/add-product', async (req, res) => {
 
 // display all products
 
-app.get('/products', async (req, res) => {
+app.get('/products', verifyToken, async (req, res) => {
     const products = await Product.find();
     if (products.length > 0) {
         res.send(products)
@@ -75,14 +75,14 @@ app.get('/products', async (req, res) => {
 
 //delete product
 
-app.delete('/products/:id', async (req, res) => {
+app.delete('/products/:id', verifyToken, async (req, res) => {
     const result = await Product.deleteOne({ _id: req.params.id });
     res.send(result)
 });
 
 // get one product
 
-app.get("/products/:id", async (req, res) => {
+app.get("/products/:id", verifyToken, async (req, res) => {
     const result = await Product.findOne({ _id: req.params.id });
     if (result) {
         res.send(result)
@@ -92,7 +92,7 @@ app.get("/products/:id", async (req, res) => {
 })
 // update product
 
-app.put("/products/:id", async (req, res) => {
+app.put("/products/:id", verifyToken, async (req, res) => {
     const result = await Product.updateOne(
         { _id: req.params.id }, //get products id
         { $set: req.body }  /**  $set  operator replaces the value of a field with the specified value. standard way to update data */
@@ -102,7 +102,7 @@ app.put("/products/:id", async (req, res) => {
 
 // search for products api
 
-app.get("/search/:key", async (req, res) => {
+app.get("/search/:key", verifyToken, async (req, res) => {
     const result = await Product.find({
         "$or": [
             {
@@ -122,6 +122,45 @@ app.get("/search/:key", async (req, res) => {
     res.send(result)
 })
 
+function verifyToken(req, res, next) {
+    console.log(req.headers['authorization'])
+    let token = req.headers['authorization'];
+    if (token) {
+        token = token.split('  ')[1];
+        Jwt.verify(token, jwtKey, (err, valid) => {
+            if (err) {
+                res
+                    .status(401)
+                    .send({ result: "Invalid token!" })
+            } else {
+                next();
+            }
+        })
+    } else {
+        res
+            .status(403)
+            .send({ result: "Provide a token..." })
+    }
+
+}
+
+//     let token = req.headers['authorization']
+//     if (token) {
+//         token = token.split(' ')[1]
+//         console.warn(token)
+//         Jwt.verify(token, jwtKey, (err, success) => {
+//             if (err) {
+//                 res.send("Invalid token")
+//             } else {
+//                 next()
+//             }
+//         })
+//     } else {
+//         res.send("Provide a token...")
+//     }
+// }
+
+
 
 app.listen(5000, 'localhost', () => {
     console.log('Server is ON and running on http://localhost:5000')
@@ -130,4 +169,14 @@ app.listen(5000, 'localhost', () => {
 
 /**$or - performs a logical OR operation on an array of one or more <expressions> and selects the documents that satisfy at least one of them
  * $regex  - provides regular expression capabilities for pattern matching strings in queries. 
+ * 
+ *     // console.log(req.headers['authorization'])  //gets authorization token 
+
+ * 
+ *         token = token.split(' ')[1] //gets second element in array
+[
+  'bearer',                                     <---- first one index 0
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.      1lsbHkiLCJlbWFpbCI6ImtlbGx5QGJhLmNvbSIsIl9pZCI6IjYzZjMyNmU1MWRjYWQ1YzI5ZDZjODkzZCIsIl9fdiI6MH0sImlhdCI6MTY3Njg3OTU4OSwiZXhwIjoxNjc2ODg2Nzg5fQ.PXBWsAMzKd6xeCxecYY7BhQLZ1ugwbOUvBsD3wHPBQ0'          <---- second one index 1
+]
+ * 
  */
