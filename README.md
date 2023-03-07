@@ -48,3 +48,11 @@ dashboard and it features:
 ![productlist](https://user-images.githubusercontent.com/110019733/223359670-26a8fdf2-6065-4610-8246-a8d3a2e3fdea.png)
 ![ser](https://user-images.githubusercontent.com/110019733/223359673-49d2d6cb-7433-4c15-a13a-fcc4b6717986.png)
 
+Some thoughts: Git branching and pull requests doesnt exist.
+I was to focused or maybe afraid a bit not to loose data during merging and other git operations. 
+So, this is thing I need to be better at. And hopefully next projects will be better structured.
+
+Another thing is, to migrate to typescript from JS, but Im not there yet.
+Learning typescript hard now, but it will take some time when I will be able to do it completly form scratch.
+My React skills are not the best ones. I see I can do better job with forms, and structuring states better.
+
