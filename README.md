@@ -1,4 +1,7 @@
-Hey there! This is Frontend to simple shop/dashboard application. It is a project I wrote to test my skills in actually connecting backend and fronted. 
+Hey there! 
+This is Frontend to simple shop/dashboard application.
+It is a project I wrote to test my skills in actually connecting backend and fronted. 
+
 Aplication has CRUD operations, where one can add, remove, update, list products.
 Also there is a registration form where you have to give some required data. Login form is also built.
 
@@ -15,6 +18,7 @@ git clone https://github.com/L00ka5z78/simple_shop_FE
 Install all dependencies. To do that, run npm install in PROJECTS DIRECTORY.
 
 Install mongoDB Compass on your device and remember to have mongo running in terminal. 
+
 Sometimes there are problems to run mongo, therefor i will give few hints.
 After installing on your device try to run it from terminal in your project.
 If it will not run, create a script in package.json file like this: "start-mongo": "cd /d **your path to /MongoDb/bin/ && mongod.exe **",
