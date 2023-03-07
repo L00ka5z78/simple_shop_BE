@@ -1,5 +1,5 @@
 Hey there! 
-This is Frontend to simple shop/dashboard application.
+This is Backend to simple shop/dashboard application.
 It is a project I wrote to test my skills in actually connecting backend and fronted. 
 
 Aplication has CRUD operations, where one can add, remove, update, list products.
