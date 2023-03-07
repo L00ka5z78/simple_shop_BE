@@ -56,3 +56,7 @@ Another thing is, to migrate to typescript from JS, but Im not there yet.
 Learning typescript hard now, but it will take some time when I will be able to do it completly form scratch.
 My React skills are not the best ones. I see I can do better job with forms, and structuring states better.
 
+If you went through and read to the end, so maybe you want to check my github account and other
+more or less succesfull projects:
+
+https://github.com/L00ka5z78
